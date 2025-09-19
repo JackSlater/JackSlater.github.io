@@ -516,6 +516,27 @@
             align-items: flex-start;
         }
 
+        #holdArea {
+            background: linear-gradient(135deg, #2a475e 0%, #1b2838 100%);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #3c5064;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        #holdArea h4 {
+            color: #66c0f4;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        #holdCanvas {
+            border: 2px solid #66c0f4;
+            border-radius: 6px;
+            background: #000000;
+        }
+
         #gameArea {
             display: flex;
             flex-direction: column;
@@ -929,6 +950,10 @@
             </div>
             <div class="modal-body">
                 <div id="tetrisGame">
+                    <div id="holdArea">
+                        <h4>Hold</h4>
+                        <canvas id="holdCanvas" width="80" height="80"></canvas>
+                    </div>
                     <div id="gameArea">
                         <canvas id="tetrisCanvas" width="200" height="400"></canvas>
                         <div id="gameStats">
@@ -1003,6 +1028,11 @@
                     this.context = this.canvas.getContext('2d');
                     this.context.scale(20, 20);
                     
+                    // Initialize hold canvas
+                    this.holdCanvas = document.getElementById('holdCanvas');
+                    this.holdContext = this.holdCanvas.getContext('2d');
+                    this.holdContext.scale(20, 20);
+                    
                     this.arena = this.createMatrix(10, 20);
                     this.player = {
                         pos: {x: 0, y: 0},
@@ -1072,6 +1102,9 @@
                     
                     this.drawMatrix(this.arena, {x: 0, y: 0});
                     this.drawMatrix(this.player.matrix, this.player.pos);
+                    
+                    // Draw held piece
+                    this.drawHold();
                 }
                 
                 merge(arena, player) {
