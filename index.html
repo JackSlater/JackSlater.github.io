@@ -964,6 +964,10 @@
                 <span class="close-modal">&times;</span>
             </div>
             <div class="modal-body">
+                <audio id="backgroundMusic" loop>
+                    <source src="background_music.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
                 <div id="tetrisGame">
                     <div id="holdArea">
                         <h4>Hold</h4>
@@ -1037,8 +1041,12 @@
             function closeModal() {
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
-                if (window.tetrisGame) {
-                    window.tetrisGame.pause();
+                const music = document.getElementById('backgroundMusic');
+                music.pause();
+                music.currentTime = 0;
+                if (window.tetrisGame && window.tetrisGame.gameRunning) {
+                    window.tetrisGame.gamePaused = true;
+                    pauseBtn.textContent = 'Resume';
                 }
             }
 
@@ -1386,13 +1394,28 @@
                     this.playerReset();
                     this.updateScore();
                     this.update();
+                    const music = document.getElementById('backgroundMusic');
+                    music.volume = 0.3; // Set volume to 30%
+                    music.play().catch(e => console.log('Audio play failed:', e));
                     startBtn.textstartBtn.textContent = 'Restart';
                 }
                 
                 pause() {
                     this.gamePaused = !this.gamePaused;
                     pauseBtn.textContent = this.gamePaused ? 'Resume' : 'Pause';
-                    if (!this.gamePaused) {
+                    
+                    // Only control music if the modal is still open
+                    const modal = document.getElementById('tetrisModal');
+                    if (modal.style.display === 'block') {
+                        const music = document.getElementById('backgroundMusic');
+                        if (this.gamePaused) {
+                            music.pause();
+                        } else {
+                            music.play().catch(e => console.log('Audio play failed:', e));
+                            this.update();
+                        }
+                    } else if (!this.gamePaused) {
+                        // If modal is closed but game is being resumed, just update without music
                         this.update();
                     }
                 }
