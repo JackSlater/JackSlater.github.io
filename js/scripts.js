@@ -1,178 +1,116 @@
-/**
- * Main JavaScript file for the portfolio website
- * 
- * This file contains all the interactive functionality for the portfolio website.
- * It includes:
- * 1. Mobile navigation handling
- * 2. Form validation
- * 3. Scroll animations
- * 4. Interactive elements
- */
+// GitHub Stats Sync Script
+// Add this to your existing js/scripts.js or create a new file
 
-// Wait for the DOM to be fully loaded before executing scripts
+async function fetchGitHubStats(username) {
+    try {
+        // Fetch user data and repositories
+        const [userResponse, reposResponse] = await Promise.all([
+            fetch(`https://api.github.com/users/${username}`),
+            fetch(`https://api.github.com/users/${username}/repos?per_page=100`)
+        ]);
+
+        const userData = await userResponse.json();
+        const reposData = await reposResponse.json();
+
+        // Calculate stats
+        const stats = {
+            publicRepos: userData.public_repos,
+            totalCommits: await getTotalCommits(username, reposData),
+            languages: await getUniqueLanguages(username, reposData),
+            followers: userData.followers,
+            following: userData.following
+        };
+
+        // Update the DOM
+        updateStatsDisplay(stats);
+        
+    } catch (error) {
+        console.error('Error fetching GitHub stats:', error);
+        // Fallback to static numbers if API fails
+        updateStatsDisplay({
+            publicRepos: 3,
+            totalCommits: 30,
+            languages: 10
+        });
+    }
+}
+
+async function getTotalCommits(username, repos) {
+    let totalCommits = 0;
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+    // Get commits for each repo (limited to avoid rate limiting)
+    const repoPromises = repos.slice(0, 10).map(async (repo) => {
+        try {
+            const response = await fetch(
+                `https://api.github.com/repos/${username}/${repo.name}/commits?author=${username}&since=${oneYearAgo.toISOString()}&per_page=100`
+            );
+            const commits = await response.json();
+            return Array.isArray(commits) ? commits.length : 0;
+        } catch {
+            return 0;
+        }
+    });
+
+    const commitCounts = await Promise.all(repoPromises);
+    return commitCounts.reduce((sum, count) => sum + count, 0);
+}
+
+async function getUniqueLanguages(username, repos) {
+    const languages = new Set();
+    
+    // Get languages for each repo (limited to avoid rate limiting)
+    const languagePromises = repos.slice(0, 20).map(async (repo) => {
+        try {
+            const response = await fetch(`https://api.github.com/repos/${username}/${repo.name}/languages`);
+            const repoLanguages = await response.json();
+            Object.keys(repoLanguages).forEach(lang => languages.add(lang));
+        } catch {
+            // Skip if error
+        }
+    });
+
+    await Promise.all(languagePromises);
+    return languages.size;
+}
+
+function updateStatsDisplay(stats) {
+    // Update the stat numbers in your HTML
+    const projectsElement = document.querySelector('.stat-item:nth-child(1) .stat-number');
+    const commitsElement = document.querySelector('.stat-item:nth-child(2) .stat-number');
+    const languagesElement = document.querySelector('.stat-item:nth-child(3) .stat-number');
+
+    if (projectsElement) projectsElement.textContent = stats.publicRepos;
+    if (commitsElement) commitsElement.textContent = stats.totalCommits;
+    if (languagesElement) languagesElement.textContent = stats.languages;
+
+    // Add loading animation fade out
+    document.querySelectorAll('.stat-number').forEach(el => {
+        el.style.opacity = '0';
+        setTimeout(() => {
+            el.style.opacity = '1';
+            el.style.transition = 'opacity 0.5s ease';
+        }, 100);
+    });
+}
+
+// Initialize when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM fully loaded. Scripts initialized.');
+    // Replace 'JackSlater' with your actual GitHub username
+    const githubUsername = 'JackSlater';
     
-    // Call initialization functions
-    initFormValidation();
-    initScrollAnimations();
-    
-    // Add any other initialization functions here
-});
-
-/**
- * Form Validation
- * Validates the contact form before submission
- */
-function initFormValidation() {
-    // Get the contact form if it exists on the page
-    const contactForm = document.getElementById('contact-form');
-    
-    // Only proceed if the contact form exists on the current page
-    if (contactForm) {
-        console.log('Contact form found. Setting up validation...');
-        
-        // Add submit event listener to the form
-        contactForm.addEventListener('submit', function(event) {
-            // Prevent the form from submitting by default
-            event.preventDefault();
-            
-            // Get form input values
-            const name = document.getElementById('name').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const subject = document.getElementById('subject').value.trim();
-            const message = document.getElementById('message').value.trim();
-            
-            // Track form validation status
-            let isValid = true;
-            
-            // Validate name
-            if (name === '') {
-                showError('name', 'Please enter your name');
-                isValid = false;
-            } else {
-                clearError('name');
-            }
-            
-            // Validate email
-            if (email === '') {
-                showError('email', 'Please enter your email address');
-                isValid = false;
-            } else if (!isValidEmail(email)) {
-                showError('email', 'Please enter a valid email address');
-                isValid = false;
-            } else {
-                clearError('email');
-            }
-            
-            // Validate subject
-            if (subject === '') {
-                showError('subject', 'Please enter a subject');
-                isValid = false;
-            } else {
-                clearError('subject');
-            }
-            
-            // Validate message
-            if (message === '') {
-                showError('message', 'Please enter your message');
-                isValid = false;
-            } else {
-                clearError('message');
-            }
-            
-            // If all validations pass, show success message
-            if (isValid) {
-                // In a real application, you would submit the form data to a server here
-                // For this template, we'll just show a success message
-                const successMessage = document.getElementById('form-success');
-                successMessage.style.display = 'block';
-                
-                // Clear form fields
-                contactForm.reset();
-                
-                // Hide success message after 5 seconds
-                setTimeout(function() {
-                    successMessage.style.display = 'none';
-                }, 5000);
-            }
-        });
-    }
-}
-
-/**
- * Show error message for a form field
- * @param {string} fieldId - The ID of the form field
- * @param {string} message - The error message to display
- */
-function showError(fieldId, message) {
-    const errorElement = document.getElementById(`${fieldId}-error`);
-    if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
-        
-        // Add error class to the input
-        const inputElement = document.getElementById(fieldId);
-        if (inputElement) {
-            inputElement.classList.add('error');
-        }
-    }
-}
-
-/**
- * Clear error message for a form field
- * @param {string} fieldId - The ID of the form field
- */
-function clearError(fieldId) {
-    const errorElement = document.getElementById(`${fieldId}-error`);
-    if (errorElement) {
-        errorElement.textContent = '';
-        errorElement.style.display = 'none';
-        
-        // Remove error class from the input
-        const inputElement = document.getElementById(fieldId);
-        if (inputElement) {
-            inputElement.classList.remove('error');
-        }
-    }
-}
-
-/**
- * Validate email format
- * @param {string} email - The email address to validate
- * @returns {boolean} - True if the email format is valid
- */
-function isValidEmail(email) {
-    // Basic email validation regex
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-/**
- * Initialize scroll animations
- * Add smooth animations when scrolling through the page
- */
-function initScrollAnimations() {
-    // Get all sections that should be animated on scroll
-    const sections = document.querySelectorAll('section');
-    
-    // Add scroll event listener
-    window.addEventListener('scroll', function() {
-        // Get current scroll position
-        const scrollPosition = window.scrollY + window.innerHeight * 0.8;
-        
-        // Check each section
-        sections.forEach(section => {
-            // Get section position
-            const sectionTop = section.offsetTop;
-            
-            // Add animation class when section is in view
-            if (scrollPosition > sectionTop) {
-                section.classList.add('animate');
-            }
-        });
+    // Add loading state
+    document.querySelectorAll('.stat-number').forEach(el => {
+        el.style.opacity = '0.5';
+        el.textContent = '...';
     });
     
-    // Trigger scroll event once to check initial view
-    window.dispatchEvent(new Event('scroll'));
-}
+    // Fetch real stats
+    fetchGitHubStats(githubUsername);
+});
+
+// Optional: Refresh stats every 5 minutes
+setInterval(() => {
+    fetchGitHubStats('JackSlater');
+}, 5 * 60 * 1000);
