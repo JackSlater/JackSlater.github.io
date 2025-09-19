@@ -1,183 +1,784 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Basic meta tags for proper rendering and SEO -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    
-    <!-- Title that appears in the browser tab -->
-    <title>My Portfolio | Home</title>
-    
-    <!-- Link to the stylesheet -->
-    <link rel="stylesheet" href="css/styles.css">
-    
-    <!-- Font Awesome for icons (from CDN) -->
+    <title>Jack Slater | Steam Profile</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Steam-inspired CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            background: linear-gradient(135deg, #1b2838 0%, #2a475e 100%);
+            color: #c7d5e0;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Steam Header */
+        .steam-header {
+            background: linear-gradient(90deg, #1b2838 0%, #2a475e 50%, #1b2838 100%);
+            padding: 15px 0;
+            border-bottom: 1px solid #3c5064;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .steam-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #66c0f4;
+            text-decoration: none;
+        }
+
+        .steam-nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        .steam-nav a {
+            color: #b8b8b8;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .steam-nav a:hover, .steam-nav a.active {
+            background: #66c0f4;
+            color: #1b2838;
+        }
+
+        /* Profile Header */
+        .profile-header {
+            background: linear-gradient(135deg, #1e2329 0%, #3c5064 100%);
+            padding: 40px 0;
+            border-bottom: 2px solid #66c0f4;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23ffffff" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .profile-content {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .avatar-section {
+            position: relative;
+        }
+
+        .avatar-frame {
+            width: 184px;
+            height: 184px;
+            background: linear-gradient(45deg, #66c0f4, #4fc3f7, #29b6f6);
+            border-radius: 8px;
+            padding: 3px;
+            box-shadow: 0 0 20px rgba(102, 192, 244, 0.3);
+        }
+
+        .avatar-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            object-fit: cover;
+            background: #2a475e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #66c0f4;
+        }
+
+        .status-indicator {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 24px;
+            height: 24px;
+            background: #57cbde;
+            border: 3px solid #1b2838;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(87, 203, 222, 0.5);
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 32px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .profile-title {
+            font-size: 16px;
+            color: #66c0f4;
+            margin-bottom: 15px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #66c0f4;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #8f98a0;
+            text-transform: uppercase;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .steam-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #75b022 0%, #8bc53f 100%);
+            color: white;
+            box-shadow: 0 2px 10px rgba(117, 176, 34, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #8bc53f 0%, #75b022 100%);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(90deg, #4c6b84 0%, #66c0f4 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(90deg, #66c0f4 0%, #4c6b84 100%);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding: 30px 0;
+        }
+
+        /* Steam Cards */
+        .steam-card {
+            background: linear-gradient(135deg, #1e2329 0%, #1b1f24 100%);
+            border: 1px solid #3c5064;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .steam-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #3c5064;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-left: 10px;
+        }
+
+        .card-icon {
+            color: #66c0f4;
+            font-size: 20px;
+        }
+
+        /* Skills as Gaming Stats */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .skill-badge {
+            background: linear-gradient(135deg, #2a475e 0%, #1b2838 100%);
+            border: 1px solid #66c0f4;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 192, 244, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .skill-badge:hover::before {
+            left: 100%;
+        }
+
+        .skill-icon {
+            font-size: 28px;
+            color: #66c0f4;
+            margin-bottom: 10px;
+        }
+
+        .skill-name {
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .skill-level {
+            font-size: 12px;
+            color: #8f98a0;
+        }
+
+        /* Project Showcase as Game Library */
+        .project-showcase {
+            display: grid;
+            gap: 15px;
+        }
+
+        .project-item {
+            background: linear-gradient(135deg, #1e2329 0%, #1b1f24 100%);
+            border: 1px solid #3c5064;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .project-item:hover {
+            transform: scale(1.02);
+        }
+
+        .project-banner {
+            height: 120px;
+            background: linear-gradient(135deg, #66c0f4 0%, #4fc3f7 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-info {
+            padding: 15px;
+        }
+
+        .project-name {
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .project-tags {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .project-tag {
+            background: #66c0f4;
+            color: #1b2838;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .project-description {
+            font-size: 13px;
+            color: #8f98a0;
+            margin-bottom: 10px;
+        }
+
+        /* Sidebar */
+        .sidebar .steam-card {
+            margin-bottom: 15px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #3c5064;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 32px;
+            height: 32px;
+            background: #66c0f4;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            color: #1b2838;
+        }
+
+        .activity-info {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-size: 13px;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: #8f98a0;
+        }
+
+        /* Footer */
+        .steam-footer {
+            background: #1b1f24;
+            padding: 20px 0;
+            border-top: 1px solid #3c5064;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #66c0f4;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        .copyright {
+            font-size: 12px;
+            color: #8f98a0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .profile-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .profile-stats {
+                justify-content: center;
+            }
+            
+            .steam-nav {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Header section with navigation -->
-    <header>
+    <!-- Steam Header -->
+    <header class="steam-header">
         <div class="container">
-            <!-- Your Name/Logo -->
-            <div class="logo">
-                <h1>Your Name</h1>
+            <div class="header-content">
+                <a href="#" class="steam-logo">
+                    <i class="fab fa-steam"></i> Jack Slater
+                </a>
+                <nav class="steam-nav">
+                    <a href="#" class="active">Profile</a>
+                    <a href="#">Projects</a>
+                    <a href="#">Resume</a>
+                    <a href="#">Contact</a>
+                </nav>
             </div>
-            
-            <!-- Navigation Menu -->
-            <nav>
-                <ul>
-                    <li><a href="index.html" class="active">Home</a></li>
-                    <li><a href="pages/projects.html">Projects</a></li>
-                    <li><a href="pages/resume.html">Resume</a></li>
-                    <li><a href="pages/contact.html">Contact</a></li>
-                </ul>
-            </nav>
         </div>
     </header>
 
-    <!-- Main content area -->
-    <main>
-        <!-- Hero section with flexbox layout -->
-        <section class="hero">
-            <div class="container flex-container">
-                <!-- Profile image -->
-                <div class="profile-image">
-                    <!-- Placeholder image - replace with your own -->
-                    <img src="https://via.placeholder.com/300" alt="Your Name">
-                </div>
-                
-                <!-- Introduction text -->
-                <div class="hero-content">
-                    <h2>Hello, I'm <span class="highlight">Your Name</span></h2>
-                    <h3>Web Developer & Designer</h3>
-                    <p>
-                        <!-- Edit this with your own introduction -->
-                        Welcome to my portfolio! I'm a passionate web developer with skills in HTML, CSS, and JavaScript.
-                        I love creating responsive, user-friendly websites and applications.
-                    </p>
-                    <div class="cta-buttons">
-                        <a href="pages/projects.html" class="btn primary-btn">View My Work</a>
-                        <a href="pages/contact.html" class="btn secondary-btn">Contact Me</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Me section -->
-        <section class="about" id="about">
-            <div class="container">
-                <h2 class="section-title">About Me</h2>
-                <div class="about-content">
-                    <p>
-                        <!-- Replace with your own about me text -->
-                        I'm a web developer based in [Your Location]. I specialize in creating modern, 
-                        responsive websites with clean and efficient code. My journey in web development 
-                        started [your story here].
-                    </p>
-                    <p>
-                        I'm proficient in HTML, CSS, JavaScript, and [other skills]. When I'm not coding, 
-                        I enjoy [your hobbies/interests].
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Skills section (using CSS Grid) -->
-        <section class="skills" id="skills">
-            <div class="container">
-                <h2 class="section-title">My Skills</h2>
-                <!-- Grid container for skills -->
-                <div class="skills-grid">
-                    <!-- Individual skill items - Add or remove as needed -->
-                    <div class="skill-item">
-                        <i class="fab fa-html5"></i>
-                        <h3>HTML5</h3>
-                        <p>Semantic markup, accessibility, and structure</p>
-                    </div>
-                    <div class="skill-item">
-                        <i class="fab fa-css3-alt"></i>
-                        <h3>CSS3</h3>
-                        <p>Styling, animations, and responsive design</p>
-                    </div>
-                    <div class="skill-item">
-                        <i class="fab fa-js"></i>
-                        <h3>JavaScript</h3>
-                        <p>DOM manipulation, events, and functionality</p>
-                    </div>
-                    <div class="skill-item">
-                        <i class="fas fa-mobile-alt"></i>
-                        <h3>Responsive Design</h3>
-                        <p>Mobile-first approach and media queries</p>
-                    </div>
-                    <!-- Add more skills as needed -->
-                </div>
-            </div>
-        </section>
-
-        <!-- Featured Projects Preview -->
-        <section class="featured-projects">
-            <div class="container">
-                <h2 class="section-title">Featured Projects</h2>
-                <p class="section-description">Here are some of my recent projects. Visit my projects page to see more.</p>
-                
-                <!-- Project cards container (Flexbox) -->
-                <div class="project-cards">
-                    <!-- Project 1 -->
-                    <div class="project-card">
-                        <div class="project-image">
-                            <img src="https://via.placeholder.com/400x300" alt="Project 1">
+    <!-- Profile Header -->
+    <section class="profile-header">
+        <div class="container">
+            <div class="profile-content">
+                <div class="avatar-section">
+                    <div class="avatar-frame">
+                        <div class="avatar-image">
+                            <i class="fas fa-user"></i>
                         </div>
-                        <div class="project-info">
-                            <h3>Project Name</h3>
-                            <p>Brief description of the project and technologies used.</p>
-                            <a href="pages/projects.html#project1" class="btn small-btn">View Details</a>
+                    </div>
+                    <div class="status-indicator"></div>
+                </div>
+                
+                <div class="profile-info">
+                    <h1 class="profile-name">Jack Slater</h1>
+                    <p class="profile-title">Full Stack Developer • Code Architect • Bug Hunter</p>
+                    
+                    <div class="profile-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">127</span>
+                            <span class="stat-label">Projects</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">1,337</span>
+                            <span class="stat-label">Commits</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">42</span>
+                            <span class="stat-label">Languages</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">∞</span>
+                            <span class="stat-label">Coffee Cups</span>
                         </div>
                     </div>
                     
-                    <!-- Project 2 -->
-                    <div class="project-card">
-                        <div class="project-image">
-                            <img src="https://via.placeholder.com/400x300" alt="Project 2">
-                        </div>
-                        <div class="project-info">
-                            <h3>Project Name</h3>
-                            <p>Brief description of the project and technologies used.</p>
-                            <a href="pages/projects.html#project2" class="btn small-btn">View Details</a>
-                        </div>
+                    <div class="profile-actions">
+                        <a href="#" class="steam-btn btn-primary">
+                            <i class="fas fa-code"></i>
+                            View Projects
+                        </a>
+                        <a href="#" class="steam-btn btn-secondary">
+                            <i class="fas fa-envelope"></i>
+                            Contact Me
+                        </a>
                     </div>
-                </div>
-                
-                <!-- Link to all projects -->
-                <div class="view-all">
-                    <a href="pages/projects.html" class="btn primary-btn">View All Projects</a>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer section -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <!-- Copyright information -->
-                <div class="copyright">
-                    <p>&copy; 2025 Your Name. All rights reserved.</p>
-                </div>
-                
-                <!-- Social media links -->
-                <div class="social-links">
-                    <!-- Add your social media profiles here -->
-                    <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                    <a href="https://linkedin.com/in/yourusername" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                    <a href="https://twitter.com/yourusername" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <!-- Add more social links as needed -->
                 </div>
             </div>
         </div>
-    </footer>
+    </section>
 
-    <!-- Link to JavaScript file -->
-    <script src="js/scripts.js"></script>
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Left Column -->
+            <div class="main-column">
+                <!-- About Section -->
+                <div class="steam-card">
+                    <div class="card-header">
+                        <i class="fas fa-user card-icon"></i>
+                        <h2 class="card-title">About This Developer</h2>
+                    </div>
+                    <p>Welcome to my digital realm! I'm a passionate full-stack developer who speaks fluent JavaScript, Python, and several other programming languages. When I'm not crafting elegant solutions or hunting down elusive bugs, you'll find me exploring new technologies and pushing the boundaries of what's possible in code.</p>
+                    <p>My journey in development started with a simple "Hello, World!" and has evolved into building scalable applications that millions of users interact with daily. I believe in writing clean, maintainable code and creating user experiences that delight and inspire.</p>
+                </div>
+
+                <!-- Skills Section -->
+                <div class="steam-card">
+                    <div class="card-header">
+                        <i class="fas fa-trophy card-icon"></i>
+                        <h2 class="card-title">Tech Stack Achievements</h2>
+                    </div>
+                    <div class="skills-grid">
+                        <div class="skill-badge">
+                            <div class="skill-icon">
+                                <i class="fab fa-js-square"></i>
+                            </div>
+                            <div class="skill-name">JavaScript</div>
+                            <div class="skill-level">Master Level</div>
+                        </div>
+                        <div class="skill-badge">
+                            <div class="skill-icon">
+                                <i class="fab fa-react"></i>
+                            </div>
+                            <div class="skill-name">React</div>
+                            <div class="skill-level">Expert Level</div>
+                        </div>
+                        <div class="skill-badge">
+                            <div class="skill-icon">
+                                <i class="fab fa-node-js"></i>
+                            </div>
+                            <div class="skill-name">Node.js</div>
+                            <div class="skill-level">Expert Level</div>
+                        </div>
+                        <div class="skill-badge">
+                            <div class="skill-icon">
+                                <i class="fab fa-python"></i>
+                            </div>
+                            <div class="skill-name">Python</div>
+                            <div class="skill-level">Advanced Level</div>
+                        </div>
+                        <div class="skill-badge">
+                            <div class="skill-icon">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="skill-name">Database Design</div>
+                            <div class="skill-level">Expert Level</div>
+                        </div>
+                        <div class="skill-badge">
+                            <div class="skill-icon">
+                                <i class="fab fa-aws"></i>
+                            </div>
+                            <div class="skill-name">Cloud Computing</div>
+                            <div class="skill-level">Advanced Level</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Featured Projects -->
+                <div class="steam-card">
+                    <div class="card-header">
+                        <i class="fas fa-gamepad card-icon"></i>
+                        <h2 class="card-title">Featured Projects Library</h2>
+                    </div>
+                    <div class="project-showcase">
+                        <div class="project-item">
+                            <div class="project-banner">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="project-info">
+                                <div class="project-name">E-Commerce Platform</div>
+                                <div class="project-tags">
+                                    <span class="project-tag">React</span>
+                                    <span class="project-tag">Node.js</span>
+                                    <span class="project-tag">MongoDB</span>
+                                </div>
+                                <div class="project-description">
+                                    Full-featured e-commerce platform with payment processing, inventory management, and real-time analytics.
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="project-item">
+                            <div class="project-banner">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="project-info">
+                                <div class="project-name">Data Visualization Dashboard</div>
+                                <div class="project-tags">
+                                    <span class="project-tag">D3.js</span>
+                                    <span class="project-tag">Python</span>
+                                    <span class="project-tag">Flask</span>
+                                </div>
+                                <div class="project-description">
+                                    Interactive dashboard for real-time data visualization with custom charts and filtering capabilities.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="project-item">
+                            <div class="project-banner">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="project-info">
+                                <div class="project-name">Mobile Task Manager</div>
+                                <div class="project-tags">
+                                    <span class="project-tag">React Native</span>
+                                    <span class="project-tag">Firebase</span>
+                                    <span class="project-tag">Redux</span>
+                                </div>
+                                <div class="project-description">
+                                    Cross-platform mobile app for task management with offline capabilities and team collaboration features.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="sidebar">
+                <!-- Recent Activity -->
+                <div class="steam-card">
+                    <div class="card-header">
+                        <i class="fas fa-clock card-icon"></i>
+                        <h3 class="card-title">Recent Activity</h3>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title">Pushed to main branch</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-bug"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title">Fixed critical bug in auth system</div>
+                            <div class="activity-time">5 hours ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title">Earned "Code Reviewer" badge</div>
+                            <div class="activity-time">1 day ago</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title">Deployed new feature to production</div>
+                            <div class="activity-time">2 days ago</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="steam-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar card-icon"></i>
+                        <h3 class="card-title">Developer Stats</h3>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title">Coding Streak</div>
+                            <div class="activity-time">73 days</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title">Pull Requests</div>
+                            <div class="activity-time">247 merged</div>
+                        </div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="activity-info">
+                            <div class="activity-title">Code Reviews</div>
+                            <div class="activity-time">156 completed</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Connect -->
+                <div class="steam-card">
+                    <div class="card-header">
+                        <i class="fas fa-link card-icon"></i>
+                        <h3 class="card-title">Connect</h3>
+                    </div>
+                    <div class="footer-links">
+                        <a href="https://github.com/jackslater" target="_blank" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/jackslater" target="_blank" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="https://twitter.com/jackslater" target="_blank" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="mailto:contact@jackslater.me" title="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="steam-footer">
+        <div class="container">
+            <div class="copyright">
+                © 2025 Jack Slater. All rights reserved. | Powered by coffee and curiosity
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
