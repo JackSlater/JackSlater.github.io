@@ -1,0 +1,180 @@
+/* ------------------------------------------------------------
+   Responsive Styles - responsive.css
+   Media queries for responsive design across devices
+   ------------------------------------------------------------ */
+
+/* Medium devices (tablets, less than 992px) */
+@media (max-width: 991.98px) {
+    html {
+        font-size: 15px;
+    }
+    
+    /* Adjust grid layouts for tablets */
+    .resume-grid,
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contact-info {
+        order: 2;
+    }
+    
+    .contact-form {
+        order: 1;
+    }
+    
+    .skills-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    /* Adjust spacing for tablets */
+    section {
+        padding: 3rem 0;
+    }
+    
+    .hero {
+        padding: 4rem 0;
+    }
+}
+
+/* Small devices (landscape phones, less than 768px) */
+@media (max-width: 767.98px) {
+    html {
+        font-size: 14px;
+    }
+    
+    /* Adjust header for mobile */
+    header .container {
+        flex-direction: column;
+        padding: 1rem 15px;
+    }
+    
+    .logo {
+        margin-bottom: 1rem;
+    }
+    
+    nav ul {
+        justify-content: center;
+    }
+    
+    nav ul li {
+        margin: 0 0.75rem;
+    }
+    
+    /* Adjust hero section for mobile */
+    .hero {
+        padding: 3rem 0;
+    }
+    
+    .flex-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .hero-content {
+        order: 1;
+    }
+    
+    .profile-image {
+        order: 2;
+    }
+    
+    .cta-buttons {
+        justify-content: center;
+    }
+    
+    /* Adjust footer for mobile */
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    /* Adjust spacing for mobile */
+    section {
+        padding: 2.5rem 0;
+    }
+    
+    .section-title {
+        font-size: 1.8rem;
+    }
+    
+    /* Adjust project cards for mobile */
+    .project-cards {
+        flex-direction: column;
+    }
+    
+    /* Adjust resume sections for mobile */
+    .resume-item-details {
+        flex-direction: column;
+    }
+    
+    .resume-item-date {
+        margin-top: 0.25rem;
+    }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    /* Additional mobile adjustments */
+    .project-cards {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .project-card {
+        width: 100%;
+    }
+    
+    .social-icons {
+        justify-content: center;
+    }
+    
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Adjust buttons on mobile */
+    .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+    }
+    
+    /* Adjust project links on mobile */
+    .project-links {
+        flex-direction: column;
+    }
+    
+    /* Adjust contact cards on mobile */
+    .contact-option {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .contact-option-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    /* Reduce spacing on mobile */
+    .section-title {
+        margin-bottom: 1.5rem;
+    }
+    
+    .page-header {
+        padding: 2.5rem 0;
+    }
+    
+    .resume-section-title {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .resume-section-title i {
+        margin-bottom: 0.5rem;
+    }
+}

@@ -1,0 +1,55 @@
+/* ------------------------------------------------------------
+   Typography Styles - typography.css
+   Defines text styles, fonts, and headings
+   ------------------------------------------------------------ */
+
+   h1, h2, h3, h4, h5, h6 {
+    margin-bottom: 0.5em;
+    line-height: 1.2;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+h3 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1.25rem;
+}
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* Section titles with special styling */
+.section-title {
+    position: relative;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2.2rem;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 4px;
+    background: #3498db; /* Primary color */
+    margin: 0.5rem auto;
+}
+
+.section-description {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+    color: #b0b0b0;
+}

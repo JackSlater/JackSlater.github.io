@@ -1,0 +1,16 @@
+/* 
+   Main Stylesheet for Portfolio Template - styles.css
+   This file contains core styles and imports other specific stylesheets
+*/
+
+/* Import all component stylesheets */
+@import url('base.css');         /* Reset and base styles */
+@import url('layout.css');       /* Layout and containers */
+@import url('typography.css');   /* Typography styles */
+@import url('components.css');   /* Common components like buttons, forms */
+@import url('header-footer.css');/* Header and footer styles */
+@import url('home.css');         /* Home page specific styles */
+@import url('projects.css');     /* Projects page specific styles */
+@import url('resume.css');       /* Resume page specific styles */
+@import url('contact.css');      /* Contact page specific styles */
+@import url('responsive.css');   /* Media queries for responsive design */

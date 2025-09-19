@@ -1,13 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Basic meta tags for proper rendering and SEO -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <!-- Title that appears in the browser tab -->
+    <title>My Portfolio | Home</title>
+    
+    <!-- Link to the stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <!-- Font Awesome for icons (from CDN) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <a href="/page1.html">Go to Page 1</a>
-    <a href="/page2.html">Go to Page 2</a>
+    <!-- Header section with navigation -->
+    <header>
+        <div class="container">
+            <!-- Your Name/Logo -->
+            <div class="logo">
+                <h1>Your Name</h1>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="pages/projects.html">Projects</a></li>
+                    <li><a href="pages/resume.html">Resume</a></li>
+                    <li><a href="pages/contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content area -->
+    <main>
+        <!-- Hero section with flexbox layout -->
+        <section class="hero">
+            <div class="container flex-container">
+                <!-- Profile image -->
+                <div class="profile-image">
+                    <!-- Placeholder image - replace with your own -->
+                    <img src="https://via.placeholder.com/300" alt="Your Name">
+                </div>
+                
+                <!-- Introduction text -->
+                <div class="hero-content">
+                    <h2>Hello, I'm <span class="highlight">Your Name</span></h2>
+                    <h3>Web Developer & Designer</h3>
+                    <p>
+                        <!-- Edit this with your own introduction -->
+                        Welcome to my portfolio! I'm a passionate web developer with skills in HTML, CSS, and JavaScript.
+                        I love creating responsive, user-friendly websites and applications.
+                    </p>
+                    <div class="cta-buttons">
+                        <a href="pages/projects.html" class="btn primary-btn">View My Work</a>
+                        <a href="pages/contact.html" class="btn secondary-btn">Contact Me</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me section -->
+        <section class="about" id="about">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-content">
+                    <p>
+                        <!-- Replace with your own about me text -->
+                        I'm a web developer based in [Your Location]. I specialize in creating modern, 
+                        responsive websites with clean and efficient code. My journey in web development 
+                        started [your story here].
+                    </p>
+                    <p>
+                        I'm proficient in HTML, CSS, JavaScript, and [other skills]. When I'm not coding, 
+                        I enjoy [your hobbies/interests].
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills section (using CSS Grid) -->
+        <section class="skills" id="skills">
+            <div class="container">
+                <h2 class="section-title">My Skills</h2>
+                <!-- Grid container for skills -->
+                <div class="skills-grid">
+                    <!-- Individual skill items - Add or remove as needed -->
+                    <div class="skill-item">
+                        <i class="fab fa-html5"></i>
+                        <h3>HTML5</h3>
+                        <p>Semantic markup, accessibility, and structure</p>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fab fa-css3-alt"></i>
+                        <h3>CSS3</h3>
+                        <p>Styling, animations, and responsive design</p>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fab fa-js"></i>
+                        <h3>JavaScript</h3>
+                        <p>DOM manipulation, events, and functionality</p>
+                    </div>
+                    <div class="skill-item">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>Responsive Design</h3>
+                        <p>Mobile-first approach and media queries</p>
+                    </div>
+                    <!-- Add more skills as needed -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Projects Preview -->
+        <section class="featured-projects">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-description">Here are some of my recent projects. Visit my projects page to see more.</p>
+                
+                <!-- Project cards container (Flexbox) -->
+                <div class="project-cards">
+                    <!-- Project 1 -->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://via.placeholder.com/400x300" alt="Project 1">
+                        </div>
+                        <div class="project-info">
+                            <h3>Project Name</h3>
+                            <p>Brief description of the project and technologies used.</p>
+                            <a href="pages/projects.html#project1" class="btn small-btn">View Details</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Project 2 -->
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://via.placeholder.com/400x300" alt="Project 2">
+                        </div>
+                        <div class="project-info">
+                            <h3>Project Name</h3>
+                            <p>Brief description of the project and technologies used.</p>
+                            <a href="pages/projects.html#project2" class="btn small-btn">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Link to all projects -->
+                <div class="view-all">
+                    <a href="pages/projects.html" class="btn primary-btn">View All Projects</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer section -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <!-- Copyright information -->
+                <div class="copyright">
+                    <p>&copy; 2025 Your Name. All rights reserved.</p>
+                </div>
+                
+                <!-- Social media links -->
+                <div class="social-links">
+                    <!-- Add your social media profiles here -->
+                    <a href="https://github.com/yourusername" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://linkedin.com/in/yourusername" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://twitter.com/yourusername" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <!-- Add more social links as needed -->
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Link to JavaScript file -->
+    <script src="js/scripts.js"></script>
 </body>
 </html>
