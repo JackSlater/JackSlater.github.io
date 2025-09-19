@@ -549,7 +549,10 @@
         #tetrisCanvas {
             border: 2px solid #66c0f4;
             border-radius: 8px;
-            background: url('data:image/svg+xml,<svg width="200" height="400" xmlns="http://www.w3.org/2000/svg"><rect width="200" height="400" fill="%23000000"/><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="%23333333" stroke-width="0.5" opacity="0.3"/></pattern></defs><rect width="200" height="400" fill="url(%23grid)"/></svg>');
+            background-image: url('tetris-grid.png');
+            background-size: 200px 400px;
+            background-repeat: no-repeat;
+            background-color: #000000;
         }
 
         #gameStats {
@@ -557,17 +560,23 @@
             gap: 15px;
             font-size: 14px;
             color: #c7d5e0;
+            justify-content: center;
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #2a475e 0%, #1b2838 100%);
+            border-radius: 8px;
+            border: 1px solid #3c5064;
         }
 
         #gameStats > div {
-            background: #2a475e;
-            padding: 8px 12px;
+            background: #1e2329;
+            padding: 8px 15px;
             border-radius: 6px;
             border: 1px solid #3c5064;
-            min-width: 80px;
+            min-width: 90px;
             text-align: center;
             white-space: nowrap;
-            overflow: hidden;
+            font-weight: bold;
         }
 
         #gameControls {
@@ -997,6 +1006,7 @@
             </div>
         </div>
     </footer>
+
     <script>
         // Tetris Game Integration
         document.addEventListener('DOMContentLoaded', function() {
@@ -1032,7 +1042,7 @@
                 }
             }
 
-            // Tetris Game Code (Simplified version)
+            // Tetris Game Code
             class TetrisGame {
                 constructor(canvasId) {
                     this.canvas = document.getElementById(canvasId);
@@ -1074,16 +1084,6 @@
                         '#FF0D72', '#0DC2FF', '#0DFF72',
                         '#F538FF', '#FF8E0D', '#FFE138', '#3877FF'
                     ];
-                    
-                    this.pieces = {
-                        'T': [[0,0,0],[1,1,1],[0,1,0]],
-                        'O': [[2,2],[2,2]],
-                        'L': [[0,3,0],[0,3,0],[0,3,3]],
-                        'J': [[0,4,0],[0,4,0],[4,4,0]],
-                        'I': [[0,5,0,0],[0,5,0,0],[0,5,0,0],[0,5,0,0]],
-                        'S': [[0,6,6],[6,6,0],[0,0,0]],
-                        'Z': [[7,7,0],[0,7,7],[0,0,0]]
-                    };
                     
                     this.dropCounter = 0;
                     this.dropInterval = 1000;
@@ -1151,17 +1151,6 @@
                     }
                 }
                 
-                drawMatrix(matrix, offset) {
-                    matrix.forEach((row, y) => {
-                        row.forEach((value, x) => {
-                            if (value !== 0) {
-                                this.context.fillStyle = this.colors[value];
-                                this.context.fillRect(x + offset.x, y + offset.y, 1, 1);
-                            }
-                        });
-                    });
-                }
-                
                 drawMatrix(matrix, offset, ctx = this.context) {
                     matrix.forEach((row, y) => {
                         row.forEach((value, x) => {
@@ -1173,34 +1162,9 @@
                     });
                 }
                 
-                drawGrid() {
-                    this.context.strokeStyle = '#333333';
-                    this.context.lineWidth = 0.05;
-                    
-                    // Draw vertical lines
-                    for (let x = 0; x <= 10; x++) {
-                        this.context.beginPath();
-                        this.context.moveTo(x, 0);
-                        this.context.lineTo(x, 20);
-                        this.context.stroke();
-                    }
-                    
-                    // Draw horizontal lines
-                    for (let y = 0; y <= 20; y++) {
-                        this.context.beginPath();
-                        this.context.moveTo(0, y);
-                        this.context.lineTo(10, y);
-                        this.context.stroke();
-                    }
-                }
-                
                 draw() {
-                    // Clear main canvas
-                    this.context.fillStyle = '#000';
-                    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-                    
-                    // Draw grid
-                    this.drawGrid();
+                    // Clear main canvas to show grid background
+                    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
                     
                     // Draw arena and current piece
                     this.drawMatrix(this.arena, {x: 0, y: 0});
@@ -1209,8 +1173,27 @@
                     // Clear and draw hold canvas
                     this.holdContext.fillStyle = '#000';
                     this.holdContext.fillRect(0, 0, this.holdCanvas.width, this.holdCanvas.height);
-                    if (this.heldPiece) {
-                        this.drawMatrix(this.heldPiece, {x: 0.5, y: 0.5}, this.holdContext);
+                    if (this.player.heldPiece) {
+                        this.drawMatrix(this.player.heldPiece, {x: 1, y: 1}, this.holdContext);
+                    }
+                    
+                    // Clear and draw next piece canvases - YOUR EXACT LOGIC
+                    this.nextContext1.fillStyle = '#000';
+                    this.nextContext1.fillRect(0, 0, this.nextCanvas1.width, this.nextCanvas1.height);
+                    if (this.player.nextPieces[0]) {
+                        this.drawMatrix(this.player.nextPieces[0], {x: 1, y: 1}, this.nextContext1);
+                    }
+
+                    this.nextContext2.fillStyle = '#000';
+                    this.nextContext2.fillRect(0, 0, this.nextCanvas2.width, this.nextCanvas2.height);
+                    if (this.player.nextPieces[1]) {
+                        this.drawMatrix(this.player.nextPieces[1], {x: 1, y: 1}, this.nextContext2);
+                    }
+
+                    this.nextContext3.fillStyle = '#000';
+                    this.nextContext3.fillRect(0, 0, this.nextCanvas3.width, this.nextCanvas3.height);
+                    if (this.player.nextPieces[2]) {
+                        this.drawMatrix(this.player.nextPieces[2], {x: 1, y: 1}, this.nextContext3);
                     }
                 }
                 
@@ -1239,11 +1222,17 @@
                 }
                 
                 playerReset() {
-                    const pieces = 'TJLOSZI';
-                    this.player.matrix = this.createPiece(pieces[pieces.length * Math.random() | 0]);
+                    if (this.player.nextPieces.length === 0) {
+                        const pieces = 'ILJOTSZ';
+                        while (this.player.nextPieces.length < 3) {
+                            this.player.nextPieces.push(this.createPiece(pieces[pieces.length * Math.random() | 0]));
+                        }
+                    }
+                    this.player.matrix = this.player.nextPieces.shift();
+                    this.player.nextPieces.push(this.createPiece('ILJOTSZ'[Math.random() * 7 | 0]));
                     this.player.pos.y = 0;
-                    this.player.pos.x = (this.arena[0].length / 2 | 0) - (this.player.matrix[0].length / 2 | 0);
-                    
+                    this.player.pos.x = (this.arena[0].length / 2 | 0) -
+                                       (this.player.matrix[0].length / 2 | 0);
                     if (this.collide(this.arena, this.player)) {
                         this.arena.forEach(row => row.fill(0));
                         if (this.player.score > this.highScore) {
@@ -1253,7 +1242,7 @@
                         this.gameOver();
                         return;
                     }
-                    this.canHold = true; // Reset hold ability for new piece
+                    this.player.canHold = true;
                 }
                 
                 playerDrop() {
@@ -1268,17 +1257,10 @@
                     this.dropCounter = 0;
                 }
                 
-                playerMove(dir) {
-                    this.player.pos.x += dir;
-                    if (this.collide(this.arena, this.player)) {
-                        this.player.pos.x -= dir;
-                    }
-                }
-                
                 playerHardDrop() {
                     while (!this.collide(this.arena, this.player)) {
                         this.player.pos.y++;
-                        this.player.score += 2; // Bonus points for hard drop
+                        this.player.score += 2;
                     }
                     this.player.pos.y--;
                     this.merge(this.arena, this.player);
@@ -1286,6 +1268,13 @@
                     this.arenaSweep();
                     this.updateScore();
                     this.dropCounter = 0;
+                }
+                
+                playerMove(dir) {
+                    this.player.pos.x += dir;
+                    if (this.collide(this.arena, this.player)) {
+                        this.player.pos.x -= dir;
+                    }
                 }
                 
                 playerRotate(dir) {
@@ -1324,18 +1313,17 @@
                 }
                 
                 playerHold() {
-                    if (!this.canHold) return;
-                    if (this.heldPiece) {
-                        [this.player.matrix, this.heldPiece] = [this.heldPiece, this.player.matrix];
+                    if (!this.player.canHold) return;
+                    if (this.player.heldPiece) {
+                        [this.player.matrix, this.player.heldPiece] = [this.player.heldPiece, this.player.matrix];
                     } else {
-                        this.heldPiece = this.player.matrix;
+                        this.player.heldPiece = this.player.matrix;
                         this.playerReset();
-                        return; // Exit early since playerReset handles position
+                        return;
                     }
                     this.player.pos.y = 0;
-                    this.player.pos.x = (this.arena[0].length / 2 | 0) -
-                                       (this.player.matrix[0].length / 2 | 0);
-                    this.canHold = false;
+                    this.player.pos.x = (this.arena[0].length / 2 | 0) - (this.player.matrix[0].length / 2 | 0);
+                    this.player.canHold = false;
                 }
                 
                 arenaSweep() {
@@ -1398,7 +1386,7 @@
                     this.playerReset();
                     this.updateScore();
                     this.update();
-                    startBtn.textContent = 'Restart';
+                    startBtn.textstartBtn.textContent = 'Restart';
                 }
                 
                 pause() {
