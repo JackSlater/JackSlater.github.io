@@ -1096,15 +1096,32 @@
                     });
                 }
                 
+                drawMatrix(matrix, offset, ctx = this.context) {
+                    matrix.forEach((row, y) => {
+                        row.forEach((value, x) => {
+                            if (value !== 0) {
+                                ctx.fillStyle = this.colors[value];
+                                ctx.fillRect(x + offset.x, y + offset.y, 1, 1);
+                            }
+                        });
+                    });
+                }
+                
                 draw() {
+                    // Clear main canvas
                     this.context.fillStyle = '#000';
                     this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
                     
+                    // Draw arena and current piece
                     this.drawMatrix(this.arena, {x: 0, y: 0});
                     this.drawMatrix(this.player.matrix, this.player.pos);
                     
-                    // Draw held piece
-                    this.drawHold();
+                    // Clear and draw hold canvas
+                    this.holdContext.fillStyle = '#000';
+                    this.holdContext.fillRect(0, 0, this.holdCanvas.width, this.holdCanvas.height);
+                    if (this.heldPiece) {
+                        this.drawMatrix(this.heldPiece, {x: 0.5, y: 0.5}, this.holdContext);
+                    }
                 }
                 
                 merge(arena, player) {
@@ -1218,20 +1235,16 @@
                 
                 playerHold() {
                     if (!this.canHold) return;
-                    
                     if (this.heldPiece) {
-                        // Swap current piece with held piece
                         [this.player.matrix, this.heldPiece] = [this.heldPiece, this.player.matrix];
                     } else {
-                        // Hold current piece and get new one
                         this.heldPiece = this.player.matrix;
                         this.playerReset();
-                        return; // playerReset already called, don't continue
+                        return; // Exit early since playerReset handles position
                     }
-                    
-                    // Reset position for swapped piece
                     this.player.pos.y = 0;
-                    this.player.pos.x = (this.arena[0].length / 2 | 0) - (this.player.matrix[0].length / 2 | 0);
+                    this.player.pos.x = (this.arena[0].length / 2 | 0) -
+                                       (this.player.matrix[0].length / 2 | 0);
                     this.canHold = false;
                 }
                 
