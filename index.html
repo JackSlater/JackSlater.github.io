@@ -1012,6 +1012,9 @@
                         level: 1
                     };
                     
+                    this.heldPiece = null;
+                    this.canHold = true;
+                    
                     this.colors = [
                         null,
                         '#FF0D72', '#0DC2FF', '#0DFF72',
@@ -1110,6 +1113,7 @@
                         this.gameOver();
                         return;
                     }
+                    this.canHold = true; // Reset hold ability for new piece
                 }
                 
                 playerDrop() {
@@ -1129,6 +1133,73 @@
                     if (this.collide(this.arena, this.player)) {
                         this.player.pos.x -= dir;
                     }
+                }
+                
+                playerHardDrop() {
+                    while (!this.collide(this.arena, this.player)) {
+                        this.player.pos.y++;
+                        this.player.score += 2; // Bonus points for hard drop
+                    }
+                    this.player.pos.y--;
+                    this.merge(this.arena, this.player);
+                    this.playerReset();
+                    this.arenaSweep();
+                    this.updateScore();
+                    this.dropCounter = 0;
+                }
+                
+                playerRotate(dir) {
+                    const pos = this.player.pos.x;
+                    let offset = 1;
+                    this.rotate(this.player.matrix, dir);
+                    while (this.collide(this.arena, this.player)) {
+                        this.player.pos.x += offset;
+                        offset = -(offset + (offset > 0 ? 1 : -1));
+                        if (offset > this.player.matrix[0].length) {
+                            this.rotate(this.player.matrix, -dir);
+                            this.player.pos.x = pos;
+                            return;
+                        }
+                    }
+                }
+                
+                rotate(matrix, dir) {
+                    for (let y = 0; y < matrix.length; ++y) {
+                        for (let x = 0; x < y; ++x) {
+                            [
+                                matrix[x][y],
+                                matrix[y][x],
+                            ] = [
+                                matrix[y][x],
+                                matrix[x][y],
+                            ];
+                        }
+                    }
+                    
+                    if (dir > 0) {
+                        matrix.forEach(row => row.reverse());
+                    } else {
+                        matrix.reverse();
+                    }
+                }
+                
+                playerHold() {
+                    if (!this.canHold) return;
+                    
+                    if (this.heldPiece) {
+                        // Swap current piece with held piece
+                        [this.player.matrix, this.heldPiece] = [this.heldPiece, this.player.matrix];
+                    } else {
+                        // Hold current piece and get new one
+                        this.heldPiece = this.player.matrix;
+                        this.playerReset();
+                        return; // playerReset already called, don't continue
+                    }
+                    
+                    // Reset position for swapped piece
+                    this.player.pos.y = 0;
+                    this.player.pos.x = (this.arena[0].length / 2 | 0) - (this.player.matrix[0].length / 2 | 0);
+                    this.canHold = false;
                 }
                 
                 arenaSweep() {
@@ -1178,6 +1249,8 @@
                     this.gameRunning = true;
                     this.gamePaused = false;
                     this.player = { pos: {x: 0, y: 0}, matrix: null, score: 0, lines: 0, level: 1 };
+                    this.heldPiece = null;
+                    this.canHold = true;
                     this.arena.forEach(row => row.fill(0));
                     this.playerReset();
                     this.updateScore();
@@ -1204,15 +1277,32 @@
                         if (!this.gameRunning || this.gamePaused) return;
                         
                         switch(event.keyCode) {
-                            case 65: // A
+                            case 65: // A - Move Left
                                 this.playerMove(-1);
                                 break;
-                            case 68: // D
+                            case 68: // D - Move Right
                                 this.playerMove(1);
                                 break;
-                            case 83: // S
+                            case 83: // S - Soft Drop
                                 this.playerDrop();
                                 break;
+                            case 87: // W - Hard Drop
+                                this.playerHardDrop();
+                                break;
+                            case 81: // Q - Rotate Counterclockwise
+                                this.playerRotate(-1);
+                                break;
+                            case 69: // E - Rotate Clockwise
+                                this.playerRotate(1);
+                                break;
+                            case 67: // C - Hold Piece
+                                this.playerHold();
+                                break;
+                        }
+                        
+                        // Prevent default behavior for game keys
+                        if ([65, 68, 83, 87, 81, 69, 67].includes(event.keyCode)) {
+                            event.preventDefault();
                         }
                     });
                 }
