@@ -531,10 +531,12 @@
             font-size: 14px;
         }
 
-        #holdCanvas {
+        #holdCanvas, #nextCanvas1, #nextCanvas2, #nextCanvas3 {
             border: 2px solid #66c0f4;
             border-radius: 6px;
             background: #000000;
+            margin-bottom: 10px;
+            display: block;
         }
 
         #gameArea {
@@ -957,6 +959,11 @@
                     <div id="holdArea">
                         <h4>Hold</h4>
                         <canvas id="holdCanvas" width="80" height="80"></canvas>
+                        
+                        <h4 style="margin-top: 20px;">Next</h4>
+                        <canvas id="nextCanvas1" width="80" height="80"></canvas>
+                        <canvas id="nextCanvas2" width="80" height="80"></canvas>
+                        <canvas id="nextCanvas3" width="80" height="80"></canvas>
                     </div>
                     <div id="gameArea">
                         <canvas id="tetrisCanvas" width="200" height="400"></canvas>
@@ -1037,6 +1044,19 @@
                     this.holdContext = this.holdCanvas.getContext('2d');
                     this.holdContext.scale(20, 20);
                     
+                    // Initialize next piece canvases
+                    this.nextCanvas1 = document.getElementById('nextCanvas1');
+                    this.nextContext1 = this.nextCanvas1.getContext('2d');
+                    this.nextContext1.scale(20, 20);
+                    
+                    this.nextCanvas2 = document.getElementById('nextCanvas2');
+                    this.nextContext2 = this.nextCanvas2.getContext('2d');
+                    this.nextContext2.scale(20, 20);
+                    
+                    this.nextCanvas3 = document.getElementById('nextCanvas3');
+                    this.nextContext3 = this.nextCanvas3.getContext('2d');
+                    this.nextContext3.scale(20, 20);
+                    
                     this.arena = this.createMatrix(10, 20);
                     this.player = {
                         pos: {x: 0, y: 0},
@@ -1048,6 +1068,7 @@
                     
                     this.heldPiece = null;
                     this.canHold = true;
+                    this.nextPieces = [];
                     
                     this.colors = [
                         null,
